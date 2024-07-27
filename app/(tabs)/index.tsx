@@ -6,12 +6,13 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
+// import { NavigationContainer } from '@react-navigation/native';
 import Ionicons from "react-native-vector-icons/Ionicons"
 import FontAwesome from "react-native-vector-icons/FontAwesome"
 
 import HomeScreen from "../../components/HomeScreen"
 import SettingsScreen from "../../components/SettingsScreen"
+
 
 export default function Home() {
   const TabNav = createBottomTabNavigator()
