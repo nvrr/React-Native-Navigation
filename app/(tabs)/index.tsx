@@ -13,6 +13,10 @@ import FontAwesome from "react-native-vector-icons/FontAwesome"
 import HomeScreen from "../../components/HomeScreen"
 import SettingsScreen from "../../components/SettingsScreen"
 
+//stack navgatn
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Stack } from 'expo-router';
 
 export default function Home() {
   const TabNav = createBottomTabNavigator()
@@ -59,9 +63,43 @@ export default function Home() {
     }
   })
 
+  //stack navigation
+  const Stack = createNativeStackNavigator()
+
   return (
+    <Stack.Navigator initialRouteName='Hhome' screenOptions={{
+      statusBarColor:"orange",
+      // title:"Home Screen",
+      headerStyle:{
+        backgroundColor:"orange"
+      },
+      headerTintColor:"#fff",
+      headerTitleAlign:"center"
+    }}>
+<Stack.Screen name="Hhome" component={HomeScreen}
+  // options={{
+  //   statusBarColor:"orange",
+  //   title:"Home Screen",
+  //   headerStyle:{
+  //     backgroundColor:"orange"
+  //   },
+  //   headerTintColor:"#fff",
+  //   headerTitleAlign:"center"
+  // }}
+/>
+<Stack.Screen name="Ssettings" component={SettingsScreen} options={{
+  headerShown:true,
+  headerBackVisible:false,
+  headerLeft: () => {
+    return(
+      <Text >Hii</Text>
+      // <Text onPress={() => {}}>Hii</Text>
+    )
+  }
+}} />
+    </Stack.Navigator>
     // <NavigationContainer >
-<TabNav.Navigator screenOptions={screenOptions}
+//  <TabNav.Navigator screenOptions={screenOptions} */}
 // screenOptions={{
 //   tabBarLabelStyle:{
 //     fontSize:14,
@@ -76,17 +114,17 @@ export default function Home() {
 //   }
 // }}
 
->
+// >
 
-{tabConfig.map(routeConfig => (
-    <TabNav.Screen key={routeConfig.name}
-    name={routeConfig.name}
-    component={routeConfig.component}
-    />
-  ))}
+// {tabConfig.map(routeConfig => (
+//     <TabNav.Screen key={routeConfig.name}
+//     name={routeConfig.name}
+//     component={routeConfig.component}
+//     />
+//   ))}
 
  
-</TabNav.Navigator>
+// </TabNav.Navigator>
     // </NavigationContainer>
     // <View>
     //   <Text style={{marginTop:30}}>Counter</Text>
