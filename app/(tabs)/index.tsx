@@ -1,52 +1,97 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import { Image, StyleSheet, Platform,View,Text, TouchableOpacity } from 'react-native';
 
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { useState } from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import Ionicons from "react-native-vector-icons/Ionicons"
+import FontAwesome from "react-native-vector-icons/FontAwesome"
 
-export default function HomeScreen() {
+import HomeScreen from "../../components/HomeScreen"
+import SettingsScreen from "../../components/SettingsScreen"
+
+export default function Home() {
+  const TabNav = createBottomTabNavigator()
+
+  const [count,setCount] = useState(0)
+
+  const tabConfig = [
+    {
+      name:'Home',
+      component:HomeScreen,
+      focusedIcon:'home',
+      unfocusedIcon:'home-outline',
+      iconComponent:Ionicons
+    },
+
+    {
+      name:'Settings',
+      component:SettingsScreen,
+      focusedIcon:'settings',
+      unfocusedIcon:'settings-outline',
+      iconComponent:Ionicons
+    },
+  ];
+
+  const screenOptions = ({route}) => ({
+    tabBarIcon: ({focused, color, size}) => {
+      const routeConfig = tabConfig.find(config => config.name == route.name)
+      const iconName = focused ? routeConfig?.focusedIcon : routeConfig?.unfocusedIcon
+      const IconComponent = routeConfig?.iconComponent;
+
+      return <IconComponent name={iconName} size={size} color={color} />;
+    },
+
+    tabBarLabelStyle:{
+      fontSize:14,
+      paddingBottom:5,
+      fontWeight:600
+    },
+    tabBarActiveTintColor:"#0163d2",
+    tabBarInactiveTintColor:"black",
+    tabBarStyle: {
+      height:60,
+      paddingTop:0,
+    }
+  })
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    // <NavigationContainer >
+<TabNav.Navigator screenOptions={screenOptions}
+// screenOptions={{
+//   tabBarLabelStyle:{
+//     fontSize:14,
+//     paddingBottom:5,
+//     fontWeight:600
+//   },
+//   tabBarActiveTintColor:"#0163d2",
+//   tabBarInactiveTintColor:"black",
+//   tabBarStyle: {
+//     height:60,
+//     paddingTop:0,
+//   }
+// }}
+
+>
+
+{tabConfig.map(routeConfig => (
+    <TabNav.Screen key={routeConfig.name}
+    name={routeConfig.name}
+    component={routeConfig.component}
+    />
+  ))}
+
+ 
+</TabNav.Navigator>
+    // </NavigationContainer>
+    // <View>
+    //   <Text style={{marginTop:30}}>Counter</Text>
+    //   <Text>{count}</Text>
+    //   <TouchableOpacity onPress={()=>setCount(count+1)} style={styles.btn}><Text style={{color:`#fff`}}>Press me</Text></TouchableOpacity>
+    // </View>
   );
 }
 
@@ -67,4 +112,28 @@ const styles = StyleSheet.create({
     left: 0,
     position: 'absolute',
   },
+  btn: {
+    backgroundColor: `blue`,
+    color: `#fff`,
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    justifyContent: 'center',
+    alignItems:'center'
+    
+  }
 });
+
+ {/* <TabNav.Screen name="Home"
+   options={{
+    tabBarIcon:({focused}) => (
+      <Ionicons name='home' size={28} color={focused ? "#0163d2" : "black"} />
+    )
+   }}
+    component={HomeScreen} />
+  <TabNav.Screen name="Settings" 
+   options={{
+    tabBarIcon:({focused}) => (
+      <Ionicons name='settings' size={28} color={focused ? "#0163d2" : "black"} />
+    )
+   }}
+    component={SettingsScreen} /> */}
